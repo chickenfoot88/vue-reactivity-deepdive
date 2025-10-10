@@ -14,6 +14,11 @@ function renderCounter() {
 
 renderCounter()
 
+setInterval(() => {
+  counter = counter + 1
+  renderCounter()
+}, 1000)
+
 counterButton.addEventListener('click', () => {
   counter = counter + 1
   renderCounter()
