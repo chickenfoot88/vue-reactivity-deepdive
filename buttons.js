@@ -1,30 +1,41 @@
 const counterButton = document.querySelector('button#counter')
 const resetButton = document.querySelector('button#reset')
 
-let counter = 5
 
-function isCounterTooBig() {
-  return counter > 10
+function useCounter() {
+  let counter = 5
+  
+  return {
+    getCounter() {
+      return counter
+    },
+    setCounter(value) {
+      counter = value
+      renderCounter()
+    },
+    isCounterTooBig() {
+      return counter > 10
+    }
+  }
 }
 
+const { getCounter, setCounter, isCounterTooBig } = useCounter()
+
 function renderCounter() {
-  counterButton.textContent = `счетчик: ${counter}`
+  counterButton.textContent = `счетчик: ${getCounter()}`
   counterButton.classList.toggle('red', isCounterTooBig())
 }
 
-renderCounter()
-
 setInterval(() => {
-  counter = counter + 1
-  renderCounter()
+  setCounter(getCounter() + 1)
 }, 1000)
 
 counterButton.addEventListener('click', () => {
-  counter = counter + 1
-  renderCounter()
+  setCounter(getCounter() + 1)
 })
 
 resetButton.addEventListener('click', () => {
-  counter = 0
-  renderCounter()
+  setCounter(0)
 })
+
+renderCounter()
