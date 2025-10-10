@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Reactivity Deep Dive</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <button id="counter"></button>
+    <button id="reset">Reset</button>
+  </div>
+</body>
+<script src="./buttons.js"></script>
+<style>
+  body {
+    height: 100vh;
+  }
+
+  .container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  button {
+    border-radius: 5px;
+    background: #252525;
+    padding: 8px 12px;
+    color: #f8f8f8;
+    cursor: pointer;
+  }
+
+  .red {
+    background: red;
+  }
+</style>
+
+</html>
