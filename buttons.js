@@ -3,37 +3,38 @@ const resetButton = document.querySelector('button#reset')
 
 
 const counterState = {
-  _value: 5,
-
-  get value() {
-    return this._value
-  },
-
-  set value(newValue) {
-    this._value = newValue
-    renderCounter()
-  },
-  
+  counter: 5,
   isCounterTooBig() {
-    return this._value > 10
+    return this.counter > 10
   }
 }
 
+const useCounter = new Proxy(counterState, {
+    get(EventTarget, prop, receiver) {
+      return Reflect.get(EventTarget, prop, receiver)
+    },
+    set(target, prop, value, receiver) {
+      renderCounter()
+      return Reflect.set(target, prop, value, receiver)
+    }
+  }
+)
+
 function renderCounter() {
-  counterButton.textContent = `счетчик: ${counterState.value}`
-  counterButton.classList.toggle('red', counterState.isCounterTooBig())
+  counterButton.textContent = `счетчик: ${useCounter.counter}`
+  counterButton.classList.toggle('red', useCounter.isCounterTooBig())
 }
 
 setInterval(() => {
-  counterState.value += 1
+  useCounter.counter += 1
 }, 1000)
 
 counterButton.addEventListener('click', () => {
-  counterState.value += 1
+  useCounter.counter += 1
 })
 
 resetButton.addEventListener('click', () => {
-  counterState.value = 0
+  useCounter.counter = 0
 })
 
 renderCounter()
