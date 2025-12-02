@@ -1,40 +1,32 @@
+const { ref, watchEffect, computed } = Vue
+
 const counterButton = document.querySelector('button#counter')
 const resetButton = document.querySelector('button#reset')
 
+const counterState = ref(5)
+const isCounterTooBig = computed(() => counterState.value > 10)
 
-const counterState = {
-  counter: 5,
-  isCounterTooBig() {
-    return this.counter > 10
-  }
-}
-
-const useCounter = new Proxy(counterState, {
-    get(EventTarget, prop, receiver) {
-      return Reflect.get(EventTarget, prop, receiver)
-    },
-    set(target, prop, value, receiver) {
-      renderCounter()
-      return Reflect.set(target, prop, value, receiver)
-    }
-  }
-)
+watchEffect(renderCounter)
+watchEffect(updateCounterColor)
 
 function renderCounter() {
-  counterButton.textContent = `счетчик: ${useCounter.counter}`
-  counterButton.classList.toggle('red', useCounter.isCounterTooBig())
+  counterButton.textContent = `счетчик: ${counterState.value}`
+}
+
+function updateCounterColor() {
+  counterButton.classList.toggle('red', isCounterTooBig.value)
 }
 
 setInterval(() => {
-  useCounter.counter += 1
+  counterState.value += 1
 }, 1000)
 
 counterButton.addEventListener('click', () => {
-  useCounter.counter += 1
+  counterState.value += 1
 })
 
 resetButton.addEventListener('click', () => {
-  useCounter.counter = 0
+  counterState.value = 0
 })
 
 renderCounter()
