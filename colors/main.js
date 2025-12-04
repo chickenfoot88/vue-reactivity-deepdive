@@ -9,28 +9,30 @@ const colors = ref([
 ])
 
 watchEffect(() => {
-  const container = document.querySelector('#colors')
+  const existingContainer = document.querySelector('#colors')
+  const container = document.createElement('div')
+  container.id = 'colors'
   
-  if(!colors.value.length) {
-    container.innerHTML = ''
-    return
+  function createNode(c, i) {
+    const color = `rgb(${c.r}, ${c.g}, ${c.b})`
+    const node = document.createElement('div')
+    node.classList.add('color')
+    node.id = color
+    node.style.backgroundColor = color
+    node.style.borderColor = `rgb(${c.r * 0.8}, ${c.g * 0.8}, ${c.b * 0.8})`
+    node.style.transform = `translateX(${SIZE * i}px)`
+    return node
   }
 
-  colors.value.forEach((c, i) => {
-    const color = `rgb(${c.r}, ${c.g}, ${c.b})`
-    let node = container.querySelector(`.color[data-color="${color}"]`)
-    
-    if(!node) {
-      node = document.createElement('div')
-      node.classList.add('color')
-      node.dataset.color = color
-      node.style.background = color
-      node.style.borderColor = `rgb(${c.r * 0.8}, ${c.g * 0.8}, ${c.b * 0.8})`
-      container.appendChild(node)
-    }
-
-    node.style.transform = `translateX(${SIZE * i}px)`
+  colors.value.map((c, i) => {
+    return createNode(c, i)
+  })
+  .sort((node1, node2) => (node1.id > node2.id ? 1 : -1))
+  .forEach(node => {
+    container.appendChild(node)
   });
+
+  morphdom(existingContainer, container)
 })
 
 document.querySelector('button#add').addEventListener('click', () => {
@@ -42,7 +44,7 @@ document.querySelector('button#add').addEventListener('click', () => {
 })
 
 document.querySelector('button#reset').addEventListener('click', () => {
-
+  colors.value.length = 0
 })
 
 document.querySelector('button#shuffle').addEventListener('click', () => {
