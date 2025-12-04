@@ -1,0 +1,25 @@
+body {
+  margin-top: 300px;
+}
+
+#colors {
+  border: solid lightblue 1px;
+  height: 60px;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.color {
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 4px;
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+  border-radius: 5px;
+
+  position: absolute;
+  transition: all 0.5s;
+}
