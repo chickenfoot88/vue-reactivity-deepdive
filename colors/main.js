@@ -17,7 +17,7 @@ watchEffect(() => {
     const color = `rgb(${c.r}, ${c.g}, ${c.b})`
     const node = document.createElement('div')
     node.classList.add('color')
-    node.id = color
+    node.dataset.key = color
     node.style.backgroundColor = color
     node.style.borderColor = `rgb(${c.r * 0.8}, ${c.g * 0.8}, ${c.b * 0.8})`
     node.style.transform = `translateX(${SIZE * i}px)`
@@ -27,7 +27,7 @@ watchEffect(() => {
   colors.value.map((c, i) => {
     return createNode(c, i)
   })
-  .sort((node1, node2) => (node1.id > node2.id ? 1 : -1))
+  .sort((node1, node2) => (node1.dataset.key > node2.dataset.key ? 1 : -1))
   .forEach(node => {
     container.appendChild(node)
   });
